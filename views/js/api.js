@@ -6,17 +6,22 @@ $(document).ready(function(){
     });
 });
 
-$( function() {
+$(document).ready(function(){
     $("#startDate").datepicker();
 });
 
-$( function() {
+$(document).ready(function(){
     $("#endDate").datepicker();
 });
 
 $(document).ready(function(){
     $('#startTime').timepicker({});
 });
+
+$(document).ready(function(){
+    $('#endTime').timepicker({});
+});
+
 
 function registerUser() {
 
