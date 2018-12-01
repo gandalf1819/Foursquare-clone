@@ -78,56 +78,58 @@
 
           <!-- POSTS !-->
           <div id="statusForm" class="form-wrapper friends-wrapper">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-4">
-                        <label for="location">Location:</label>
-                            <input type="text" id="loc" class="form-control" placeholder="Location">
-                    <!--</div>
-                    <div class="col-4">!-->
-                     <br>
-                        <label for="radius-of-Interest">Radius of Interest:</label>
+              <table class="table">
+                  <tbody>
+                  <tr>
+                      <td>
+                          <label for="status">Status:</label>
+                      </td>
+                      <td>
+                          <textarea rows="1" type="text" id="status" class="form-control" placeholder="What's on your mind?" ></textarea>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <label for="location">Location:</label>
+                          <input type="text" id="loc" class="form-control" placeholder="Location">
+                      </td>
+                      <td>
+                          <label for="radius-of-Interest">Radius of Interest:</label>
                           <input type="text" id="radiusOfInterest" class="form-control" placeholder="Radius of Interest">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <label for="start-date">Start Date:</label>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <label for="start-date">Start Date:</label>
                           <input type="text" id="startDate" class="form-control" placeholder="Start Date">
-                    <!--</div>
-                    <div class="col-4">!-->
-                    <br>
-                        <label for="end-date">End Date:</label>
+                      </td>
+                      <td>
+                          <label for="end-date">End Date:</label>
                           <input type="text" id="endDate" class="form-control" placeholder="End Date">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <label for="start-time">Start Time:</label>
-                          <input type="text" id="startTime" class="timepicker" placeholder="Start Time">
-                    <!--</div>
-                    <div class="col-4">!-->
-                    <br>
-                        <label for="end-time">End Time:</label>
-                          <input type="text" id="endTime" class="timepicker" placeholder="End Time">
-                    <br>
-                      <div class="control-group">
-                            <label for="input-tags">Tags:</label>
-                            <input type="text" id="input-tags" class="demo-default" value="awesome,neat">
-                      </div>
-                    </div>
-                  <br>
-                </div>
-
-                <div>
-                      <textarea rows="2" id="status" class="form-control" placeholder="What's on your mind?" ></textarea>
-                    <button type="submit" class="btn btn-primary" onclick="addPost()">Publish</button>
-                </div>
-            </div>
-
-
-            </div>
-
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <label for="start-time">Start Time:</label>
+                          <input type="text" id="startTime" class="form-control" placeholder="Start Time">
+                      </td>
+                      <td>
+                          <label for="end-time">End Time:</label>
+                          <input type="text" id="endTime" class="form-control" placeholder="End Time">
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>
+                          <label for="input-tags">Tags:</label>
+                          <input type="text" id="input-tags" class="form-control" value="awesome,neat">
+                      </td>
+                      <td>
+                          <br>
+                          <button type="submit" class="btn btn-primary" onclick="addPost()">Publish</button>
+                      </td>
+                  </tr>
+                  </tbody>
+              </table>
           <!-- ./posts -->
           </div>
 
