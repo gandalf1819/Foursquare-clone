@@ -1,0 +1,171 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+			<script src="/js/posts.js"></script>
+			<script src="/js/toastr.js"></script>
+			<script src="/js/api.js"></script>
+			<link href="/css/main.css" rel="stylesheet" id="main-css">
+				<!-- toastr !-->
+				<link href="/css/toastr.css" rel="stylesheet" id="main-css">
+					<!-- datepicker !-->
+					<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+						<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+							<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+							<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+							<!-- timepicker !-->
+							<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+								<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+								<!-- selective.js !-->
+								<link rel="stylesheet" href="css/selectize.bootstrap3.css">
+									<script src="/js/selectize.js"></script>
+								</head>
+								<body id="LoginForm">
+									<div class="container">
+										<div class="login-form">
+											<div class="main-div">
+												<div class="container">
+													<ul class="nav nav-tabs nav-justified">
+														<li class="active" id="friendsTab">
+															<a onclick="toggleTab(1)">Friends</a>
+														</li>
+														<li class="active" id="friendRequestsTab">
+															<a onclick="toggleTab(2)">Friend Requests</a>
+														</li>
+														<li id="newsFeedTab">
+															<a onclick="toggleTab(3)">Newsfeed</a>
+														</li>
+														<li id="statusTab">
+															<a onclick="toggleTab(4)">Status</a>
+														</li>
+													</ul>
+													<br>
+													</div>
+													<div id="friendsForm" class="form-wrapper friends-wrapper">
+														<div class="form-group">
+															<div class="img-wrapper">
+																<img src="images/user.png" class="img-class img">
+																</div>
+																<div class="label-text text-left">Sahil Sehgal</div>
+																<div class="action-button text-right">
+																	<button class="button btn btn-success">Follow</button>
+																</div>
+															</div>
+															<div class="form-group">
+																<div class="img-wrapper">
+																	<img src="images/user.png" class="img-class img">
+																	</div>
+																	<div class="label-text text-left">Sahil Sehgal</div>
+																	<div class="action-button text-right">
+																		<button class="button btn btn-success">Follow</button>
+																	</div>
+																</div>
+																<div class="form-group">
+																	<div class="img-wrapper">
+																		<img src="images/user.png" class="img-class img">
+																		</div>
+																		<div class="label-text text-left">Sahil Sehgal</div>
+																		<div class="action-button text-right">
+																			<button class="button btn btn-success">Follow</button>
+																		</div>
+																	</div>
+																	<div class="forgot"></div>
+																	<button type="submit" class="btn btn-primary">Submit</button>
+																</div>
+																<div id="friendRequestsForm" class="form-wrapper friends-wrapper">
+																	<div class="form-group">
+																		<div class="img-wrapper">
+																			<img src="images/user.png" class="img-class img">
+																			</div>
+																			<div class="label-text text-left">Sahil Sehgal</div>
+																			<div class="action-button text-right">
+																				<button class="button btn btn-success">Follow</button>
+																			</div>
+																		</div>
+																		<div class="form-group">
+																			<div class="img-wrapper">
+																				<img src="images/user.png" class="img-class img">
+																				</div>
+																				<div class="label-text text-left">Sahil Sehgal</div>
+																				<div class="action-button text-right">
+																					<button class="button btn btn-success">Follow</button>
+																				</div>
+																			</div>
+																			<div class="form-group">
+																				<div class="img-wrapper">
+																					<img src="images/user.png" class="img-class img">
+																					</div>
+																					<div class="label-text text-left">Sahil Sehgal</div>
+																					<div class="action-button text-right">
+																						<button class="button btn btn-success">Follow</button>
+																					</div>
+																				</div>
+																				<div class="forgot"></div>
+																				<button type="submit" class="btn btn-primary">Submit</button>
+																			</div>
+																			<div id="newsFeedForm" class="form-wrapper table-responsive">
+																				<div class="label-text text-left">
+																					<strong>Nikhil Nar</strong>
+																				</div>
+																				<div class="label-text text-left">- My Post</div>
+																			</div>
+																			<div id="statusForm" class="form-wrapper">
+                                        <div class ="col-xs-12">
+                                          <div class="col-xs-12">
+                                            <div class="form-group">
+                                              <label for="status" class="pull-left">Status:</label>
+                                              <textarea rows="2" id="status" class="form-control" placeholder="What's on your mind?"></textarea>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class ="col-xs-12">
+                                          <div class="col-xs-6">
+                                            <label for="location" class="pull-left margin-t1">Location:</label>
+                                            <input type="text" id="loc" class="form-control" placeholder="Location">
+                                          </div>
+                                          <div class="col-xs-6">
+                                            <label for="radius-of-Interest" class="pull-left margin-t1">Radius of Interest:</label>
+                                            <input type="text" id="radiusOfInterest" class="form-control" placeholder="Radius of Interest">
+                                          </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class ="col-xs-12">
+                                          <div class="col-xs-6">
+                                            <label for="start-date" class="pull-left margin-t1">Start Date:</label>
+                                            <input type="text" id="startDate" class="form-control" placeholder="Start Date">
+                                          </div>
+                                          <div class="col-xs-6">
+                                            <label for="end-date" class="pull-left margin-t1">End Date:</label>
+                                            <input type="text" id="endDate" class="form-control" placeholder="End Date">
+                                          </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class ="col-xs-12">
+                                          <div class="col-xs-6">
+                                            <label for="start-time" class="pull-left margin-t1">Start Time:</label>
+                                            <input type="text" id="startTime" class="form-control" placeholder="Start Time">
+                                          </div>
+                                          <div class="col-xs-6">
+                                            <label for="end-time" class="pull-left margin-t1">End Time:</label>
+                                            <input type="text" id="endTime" class="form-control" placeholder="End Time">
+                                          </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class ="col-xs-12">
+                                          <div class="col-xs-6">
+                                            <label for="input-tags" class="pull-left margin-t1">Tags:</label>
+                                            <input type="text" id="input-tags" class="form-control" value="">
+                                          </div>
+                                          <div class="col-xs-6 margin-t18">
+                                            <button type="submit" class="btn btn-primary" onclick="addPost()">Publish</button>
+                                          </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</body>
+														</html>
