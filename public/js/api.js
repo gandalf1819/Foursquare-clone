@@ -30,7 +30,7 @@ function registerUser() {
       "password": password
   }
   $.ajax({
-      url: "http://localhost:9090/register/",
+      url: "http://localhost:3000/auth/register/",
       method: "POST",
       data: JSON.stringify(registerData),
       dataType: 'json',
