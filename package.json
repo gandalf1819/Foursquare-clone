@@ -14,6 +14,7 @@
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.4",
+    "randomstring": "^1.1.5",
     "sequelize": "^4.41.2"
   },
   "devDependencies": {
