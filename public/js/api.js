@@ -81,9 +81,9 @@ function signIn() {
 
   var data = {
       "email": email,
-      "password": password,
+      "password": password
   }
-  var url = "http://localhost:9090/login/";
+  var url = "http://localhost:3000/auth/login";
   $.ajax({
       url: url,
       method: "POST",
@@ -93,7 +93,7 @@ function signIn() {
       success: function (data) {
           if (data.Status == 200) {
               toastr.success(data.Message)
-              location.href = "http://localhost:9090/posts/";
+              location.href = "http://localhost:3000/posts/";
           }
           else {
               toastr.error(data.Message)
@@ -131,7 +131,7 @@ function addPost() {
 }
 
 function logout() {
-  var url = "http://localhost:9090/logout/"
+  var url = "http://localhost:3000/auth/logout/"
   $.ajax({
       url: url,
       method: "DELETE",
@@ -140,7 +140,7 @@ function logout() {
       success: function (data) {
           if (data.Status == 200) {
               toastr.success(data.Message);
-              location.href = "http://localhost:9090/login/";
+              location.href = "http://localhost:3000/login/";
           } else {
               toastr.error(data.Message)
           }
