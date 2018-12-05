@@ -1,4 +1,6 @@
 import auth from './auth'
+import notes from './notes'
+import filters from './filters'
 var express = require('express');
 var router = express.Router();
 
@@ -16,6 +18,8 @@ router.get('/posts/', function(req, res, next) {
 });
 
 router.use('/auth/', auth)
+router.use('/notes/', notes)
+router.use('/filters/', filters)
 
 
 
