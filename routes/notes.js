@@ -23,5 +23,17 @@ router.post('/', fetchToken, function(req, res, next) {
     })
 });
 
+router.get('/', fetchToken, function(req, res, next) {
+  console.log("req====", req);
+  notesController.getNotes(req.query.filter_id, req.user_details)
+    .then(data => {
+      res.send(Message.generateMessage(200, data, "Notes filtered Successfully!!"));
+    })
+    .catch(msg => {
+      res.send(Message.generateMessage(422, {}, msg));
+    })
+});
+
+
 
 module.exports = router;

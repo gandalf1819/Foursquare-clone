@@ -88,8 +88,45 @@ const createNotes = (reqData, userDetails) => {
   })
 }
 
+const getNotes = (filterId, userDetails)=>{
+  return new Promise((resolve, reject)=>{
+    let query = `select user_type from filter where filter_id = ${filterId}`;
+    sequelize.query(query, {
+        type: sequelize.QueryTypes.SELECT
+      })
+      .then(data=>{
+        console.log("data=",data);
+        let userType = (data[0] && data[0].user_type)?data[0].user_type:null;
+
+        switch(userType){
+          case "Public": query = `call get_public_notes(${filterId});`
+                        break;
+          case "Friends": query = `call get_friends_notes(${filterId});`
+                        break;
+          case "Private": query = `call get_private_notes(${filterId});`
+                        break;
+          default       : reject("No filter found!!")
+                          return
+        }
+        return sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+          })
+      })
+      .then(data=>{
+        console.log("data=",Object.values(JSON.parse(JSON.stringify(data[0]))));
+        let response =Object.values(JSON.parse(JSON.stringify(data[0])));
+        resolve(response)
+      })
+      .catch(err=>{
+        console.log("err=",err);
+        reject("Error occured during filtering notes. Please contact your system administrator!!")
+      })
+  })
+}
+
   const notes = {
-    createNotes
+    createNotes,
+    getNotes
   }
 
 
