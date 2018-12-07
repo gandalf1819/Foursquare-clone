@@ -15,9 +15,18 @@ SQL SECURITY DEFINER
 COMMENT ''
 BEGIN
 
-insert into filter(user_id, state_id, user_type, loc_id, event_date, event_time) values(userId, stateId, userType, locId, eventDate, eventTime);
+DECLARE filterId INT;
 
-select last_insert_id() as filter_id;
+select filter_id into filterId from filter where user_id = userId and (case when stateId is null then state_id is null else state_id = stateId end);
 
+insert into filter(user_id, state_id, user_type, loc_id, event_date, event_time) values(userId, stateId, userType, locId, eventDate, eventTime)
+on duplicate key update user_type =userType, loc_id = locId, event_date = eventDate, event_time = eventTime;
+
+
+IF filterId IS NULL THEN
+	select last_insert_id() as filter_id;
+ELSE
+	select filterId as filter_id;
+END IF;
 
 END

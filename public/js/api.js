@@ -1,3 +1,5 @@
+var notesMap={};
+
 function registerUser() {
 
   var firstName = document.getElementById("inputFirstName").value;
@@ -254,14 +256,30 @@ function addFilter() {
   });
 }
 
-
 function addElementsToEventsList(data){
 console.log("add Elements to Events List called");
   var postsElem = document.getElementById("postsList");
   postsElem.innerHTML=""
   data.forEach(function(post){
-    postsElem.innerHTML+='<div class="label-text text-left margin-t18"><strong>'+post.first_name+" "+post.last_name+'</strong></div><div class="label-text text-left">-'+post.description+'</div>'
+    notesMap[post.note_id]=post
+    postsElem.innerHTML+=`<div class='col-xs-12'>
+    <div class ='col-xs-6'>
+        <div class="label-text text-left margin-t18"><strong>
+    `+post.first_name+" "+post.last_name+`</strong></div><div class="label-text text-left">-
+    `+post.description+`</div></div>
+    <div class ='col-xs-2'>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="displayDataInModal(`+post.note_id+`)">
+        See Note Details
+      </button>
+    </div></div>`
+    console.log("notesMap =", notesMap);
   })
+}
+
+function displayDataInModal(noteId){
+  console.log("noteId=",noteId);
+  console.log("notesMap =",notesMap);
+  console.log("data to be shown in data modal =", notesMap[noteId]);
 }
 
 function logout() {

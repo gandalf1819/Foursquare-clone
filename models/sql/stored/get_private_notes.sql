@@ -11,7 +11,7 @@ SQL SECURITY DEFINER
 COMMENT ''
 BEGIN
 
-select n.*, u.first_name, u.last_name from user u
+select n.*, u.first_name, u.last_name, l.area_name from user u
 inner join note n on n.user_id=u.id
 and n.shared_with ="Private"
 inner join note_tag nt

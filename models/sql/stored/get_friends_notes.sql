@@ -10,7 +10,7 @@ SQL SECURITY DEFINER
 COMMENT ''
 BEGIN
 
-select n.*, nu.first_name, nu.last_name from user u
+select n.*, nu.first_name, nu.last_name, l.area_name from user u
 inner join friend_list fl on u.id=fl.user_id
 and fl.action ='Accepted'
 inner join note n on n.user_id=fl.friend_id
@@ -39,7 +39,5 @@ when n.end_date is not null and n.end_time is not null and n.interval is null th
 when n.end_date is not null and n.end_time is not null and n.interval is not null then n.end_date >= f.event_date and n.start_time <=f.event_time and n.end_time >= f.event_time and datediff(f.event_date, n.start_date)%n.interval = 0
 else 1
 end);
-
-
 
 END
