@@ -17,7 +17,7 @@ BEGIN
 
 DECLARE filterId INT;
 
-select filter_id into filterId from filter where user_id = userId and (case when stateId is null then state_id is null else state_id = stateId end);
+select filter_id into filterId from filter where user_id = userId and (case when stateId is null then state_id is null else state_id = stateId end) limit 1;
 
 insert into filter(user_id, state_id, user_type, loc_id, event_date, event_time) values(userId, stateId, userType, locId, eventDate, eventTime)
 on duplicate key update user_type =userType, loc_id = locId, event_date = eventDate, event_time = eventTime;
