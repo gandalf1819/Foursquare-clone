@@ -98,7 +98,10 @@ const updateFilters = (reqData, userDetails) => {
         })
       })
       .then(data => {
-        resolve("Filter Added Successfully!!")
+        data={
+          "filter_id": filterId
+        }
+        resolve(data)
       })
       .catch(err => {
         console.log("err=",err);

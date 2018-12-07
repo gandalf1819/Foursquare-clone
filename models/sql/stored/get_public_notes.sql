@@ -10,7 +10,9 @@ SQL SECURITY DEFINER
 COMMENT ''
 BEGIN
 
-select distinct n.* from note n
+select distinct n.*, nu.first_name, nu.last_name from note n
+inner join user nu
+on n.user_id = nu.id
 inner join note_tag nt
 on n.note_id = nt.note_id
 and n.shared_with ="Public"

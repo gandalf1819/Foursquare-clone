@@ -6,10 +6,38 @@ $(document).ready(function() {
     createOnBlur: true,
     create: true
   });
-	$("#startDate").datepicker();
-	$("#endDate").datepicker();
-	$('#startTime').timepicker({});
-	$('#endTime').timepicker({});
+  $('#filterTags').selectize({
+    plugins: ['restore_on_backspace'],
+    persist: false,
+    createOnBlur: true,
+    create: true
+  });
+  $("#startDate").datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+  $("#endDate").datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+  $("#eventDate").datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+  $('#startTime').timepicker({
+    timeFormat: 'HH:mm:ss'
+  });
+  $('#endTime').timepicker({
+    timeFormat: 'HH:mm:ss'
+  });
+  $('#eventTime').timepicker({
+    timeFormat: 'HH:mm:ss'
+  });
+  $('#selectState').selectize({
+    create: true,
+    sortField: {
+      field: 'text',
+      direction: 'asc'
+    },
+    dropdownParent: 'body'
+  });
 })
 
 
