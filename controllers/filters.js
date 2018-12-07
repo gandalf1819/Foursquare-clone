@@ -57,7 +57,15 @@ const updateFilters = (reqData, userDetails) => {
       .then(data => {
         reqData.state_id = (data[0] && data[0].state_id) ? data[0].state_id : null;
 
-        query = `call create_filter(${userDetails.id}, ${reqData.state_id}, "${reqData.user_type}", ${reqData.loc_id},"${reqData.event_date}","${reqData.event_time}" );`;
+        if(reqData.eventDate){
+          reqData.eventDate =`"${reqData.eventDate}"`;
+        }
+
+        if(reqData.eventTime){
+          reqData.eventTime =`"${reqData.eventTime}"`;
+        }
+
+        query = `call create_filter(${userDetails.id}, ${reqData.state_id}, "${reqData.user_type}", ${reqData.loc_id},${reqData.event_date},${reqData.event_time} );`;
         return sequelize.query(query, {
           type: sequelize.QueryTypes.SELECT
         })
