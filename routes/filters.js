@@ -15,8 +15,8 @@ var router = express.Router();
 router.post('/', fetchToken, function(req, res, next) {
   console.log("req====", req);
   filtersController.updateFilters(req.body, req.user_details)
-    .then(msg => {
-      res.send(Message.generateMessage(200, {}, msg));
+    .then(data => {
+      res.send(Message.generateMessage(200, data, "Filter Added Successfully!!"));
     })
     .catch(msg => {
       console.log("msg===",msg);
@@ -35,5 +35,6 @@ router.get('/states', fetchToken, function(req, res, next) {
       res.send(Message.generateMessage(422, {}, msg));
     })
 });
+
 
 module.exports = router;

@@ -48,6 +48,25 @@ router.post('/login', function(req, res, next) {
     })
 });
 
+router.delete('/logout', function(req, res, next) {
+  console.log("req====", req.cookies);
+  let accessToken="";
+  if(req.cookies['x-access-token']){
+    accessToken = req.cookies['x-access-token'];
+  }
+
+  authController.logout(accessToken)
+    .then(msg => {
+      res.cookie('x-access-token', '', {expires: new Date(0)})
+
+      res.send(Message.generateMessage(200, {}, msg));
+    })
+    .catch(msg => {
+      res.send(Message.generateMessage(422, {}, msg));
+    })
+});
+
+/* friends controller */
 router.post('/friends', function(req, res, next) {
   console.log("req====", req.cookies);
   if(req.cookies['x-access-token']){
@@ -71,23 +90,5 @@ router.post('/friends', function(req, res, next) {
       res.send(Message.generateMessage(422, {}, msg));
     })
 })
-
-router.delete('/logout', function(req, res, next) {
-  console.log("req====", req.cookies);
-  let accessToken="";
-  if(req.cookies['x-access-token']){
-    accessToken = req.cookies['x-access-token'];
-  }
-
-  authController.logout(accessToken)
-    .then(msg => {
-      res.cookie('x-access-token', '', {expires: new Date(0)})
-
-      res.send(Message.generateMessage(200, {}, msg));
-    })
-    .catch(msg => {
-      res.send(Message.generateMessage(422, {}, msg));
-    })
-});
 
 module.exports = router;

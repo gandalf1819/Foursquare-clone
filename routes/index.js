@@ -14,15 +14,16 @@ router.get('/login/', function(req, res, next) {
 });
 
 router.get('/posts/', function(req, res, next) {
-  res.render('posts', { friends: 'Friends' });
+  res.render('posts', { friends : 'Express'} );
 });
 
-router.get('/friends', function(req, res, next) {
-  res.render('friends');
-})
+/*router.get('/friends', function(req, res, next) {
+  res.render('friends', { friends } );
+})*/
 
 router.use('/auth/', auth)
 router.use('/notes/', notes)
 router.use('/filters/', filters)
 
 module.exports = router;
+
