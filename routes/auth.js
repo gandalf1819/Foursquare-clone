@@ -48,7 +48,7 @@ router.post('/login', function(req, res, next) {
     })
 });
 
-router.get('/getFriendList', function(req, res, next) {
+router.post('/friends', function(req, res, next) {
   console.log("req====", req.cookies);
   if(req.cookies['x-access-token']){
     accessToken = req.cookies['x-access-token'];
@@ -58,7 +58,7 @@ router.get('/getFriendList', function(req, res, next) {
     "first_name": req.user.first_name    
   }
 
-  authController.getFriendList(data)
+  authController.friends(data)
     .then(token => {
       res.cookie('x-access-token', token)
       let data = {
