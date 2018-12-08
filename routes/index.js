@@ -14,8 +14,12 @@ router.get('/login/', function(req, res, next) {
 });
 
 router.get('/posts/', function(req, res, next) {
-  res.render('posts');
+  res.render('posts', { friends: 'Friends' });
 });
+
+router.get('/friends', function(req, res, next) {
+  res.render('friends');
+})
 
 router.use('/auth/', auth)
 router.use('/notes/', notes)
