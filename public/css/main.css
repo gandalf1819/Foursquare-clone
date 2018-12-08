@@ -156,3 +156,8 @@ body#LoginForm {
   max-height: 90px;
   height: 100%;
 }
+
+.padding-modal{
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

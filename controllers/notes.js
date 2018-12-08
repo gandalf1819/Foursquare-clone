@@ -145,7 +145,7 @@ const getNotes = (filterId, userDetails)=>{
         }
 
         if(noteIds.length>0){
-          query = `select note_comment.*, user.first_name, user.last_name from note_comment inner join note on note_comment.note_id=note.note_id inner join user on note_comment.user_id = user.id where note_comment.note_id in (${noteIds})`;
+          query = `select note_comment.*, user.first_name, user.last_name from note_comment inner join note on note_comment.note_id=note.note_id inner join user on note_comment.user_id = user.id where note_comment.note_id in (${noteIds}) order by note_comment.id`;
           return sequelize.query(query, {
               type: sequelize.QueryTypes.SELECT
             })
@@ -169,9 +169,36 @@ const getNotes = (filterId, userDetails)=>{
   })
 }
 
+const addComment = (commentData, userDetails)=>{
+  return new Promise((resolve, reject)=>{
+    console.log("userDetails =", userDetails);
+
+    let query = `insert into note_comment(note_id, user_id, comment) values(${commentData.note_id}, ${userDetails.id}, "${commentData.comment}")`;
+    sequelize.query(query, {
+        type: sequelize.QueryTypes.INSERT
+      })
+      .then(data=>{
+        query = `select * from note_comment inner join user on note_comment.user_id = user.id where note_id = ${commentData.note_id} order by note_comment.id`;
+        return sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+          })
+      })
+      .then(data=>{
+        console.log("data =",data);
+        resolve(data)
+      })
+      .catch(err=>{
+        console.log("err =", err);
+        reject("Error occured during adding comments. Please contact your system administrator!!")
+      })
+
+  })
+}
+
   const notes = {
     createNotes,
-    getNotes
+    getNotes,
+    addComment
   }
 
 
