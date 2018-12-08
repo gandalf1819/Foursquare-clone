@@ -90,7 +90,10 @@ const createNotes = (reqData, userDetails) => {
 
 const getNotes = (filterId, userDetails)=>{
   return new Promise((resolve, reject)=>{
-    let query = `select user_type from filter where filter_id = ${filterId}`;
+    let notes,
+    noteIds="",
+    notesMap={},
+    query = `select user_type from filter where filter_id = ${filterId}`;
     sequelize.query(query, {
         type: sequelize.QueryTypes.SELECT
       })
@@ -114,8 +117,50 @@ const getNotes = (filterId, userDetails)=>{
       })
       .then(data=>{
         console.log("data=",Object.values(JSON.parse(JSON.stringify(data[0]))));
-        let response =Object.values(JSON.parse(JSON.stringify(data[0])));
-        resolve(response)
+        notes =Object.values(JSON.parse(JSON.stringify(data[0])));
+
+        notes.forEach((item,index)=>{
+          if(index == 0)
+            noteIds+=`${item.note_id}`
+          noteIds+=`, ${item.note_id}`
+          notesMap[item.note_id] = item
+          notesMap[item.note_id]["comments"] =[]
+          notesMap[item.note_id]["tags"] =[]
+        })
+
+        if(noteIds.length>0){
+          query = `select * from note_tag inner join tag on note_tag.tag_id=tag.tag_id where note_tag.note_id in (${noteIds})`;
+          return sequelize.query(query, {
+              type: sequelize.QueryTypes.SELECT
+            })
+        }
+
+        return Promise.resolve([])
+      })
+      .then(data=>{
+        if(data.length > 0){
+          data.forEach((item,index)=>{
+            notesMap[item.note_id]["tags"].push(item)
+          })
+        }
+
+        if(noteIds.length>0){
+          query = `select note_comment.*, user.first_name, user.last_name from note_comment inner join note on note_comment.note_id=note.note_id inner join user on note_comment.user_id = user.id where note_comment.note_id in (${noteIds}) order by note_comment.id`;
+          return sequelize.query(query, {
+              type: sequelize.QueryTypes.SELECT
+            })
+        }
+        return Promise.resolve([])
+
+      })
+      .then(data=>{
+        if(data.length > 0){
+          data.forEach((item,index)=>{
+            notesMap[item.note_id]["comments"].push(item)
+          })
+        }
+
+        resolve(Object.values(notesMap))
       })
       .catch(err=>{
         console.log("err=",err);
@@ -124,9 +169,36 @@ const getNotes = (filterId, userDetails)=>{
   })
 }
 
+const addComment = (commentData, userDetails)=>{
+  return new Promise((resolve, reject)=>{
+    console.log("userDetails =", userDetails);
+
+    let query = `insert into note_comment(note_id, user_id, comment) values(${commentData.note_id}, ${userDetails.id}, "${commentData.comment}")`;
+    sequelize.query(query, {
+        type: sequelize.QueryTypes.INSERT
+      })
+      .then(data=>{
+        query = `select * from note_comment inner join user on note_comment.user_id = user.id where note_id = ${commentData.note_id} order by note_comment.id`;
+        return sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+          })
+      })
+      .then(data=>{
+        console.log("data =",data);
+        resolve(data)
+      })
+      .catch(err=>{
+        console.log("err =", err);
+        reject("Error occured during adding comments. Please contact your system administrator!!")
+      })
+
+  })
+}
+
   const notes = {
     createNotes,
-    getNotes
+    getNotes,
+    addComment
   }
 
 
