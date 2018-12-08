@@ -99,7 +99,8 @@ const logout = (accessToken)=>{
 
 const friends = (regData) => {
   return new Promise((resolve, reject) => {
-      let query = `SELECT u.first_name FROM USER AS u INNER JOIN friend_list AS fl ON u.id=fl.friend_id WHERE fl.user_id=${regData.id}`;
+      let query = `call get_friends_list(${regData.id})`;
+      //let query = `SELECT u.first_name FROM USER AS u INNER JOIN friend_list AS fl ON u.id=fl.friend_id WHERE fl.user_id=${regData.id}`;
       sequelize.query(query, {
           type: sequelize.QueryTypes.SELECT
       })
