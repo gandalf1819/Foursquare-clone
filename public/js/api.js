@@ -114,6 +114,7 @@ function addPost() {
   var sharedWith = document.getElementById("sharedWith").value;
   var interval = document.getElementById("interval").value;
   var areCommentsAllowed = document.getElementById("areCommentsAllowed").value;
+  var location = document.getElementById("postLocation").value;
   console.log("tags =", tags);
   if (!status) {
     toastr.error("Please enter status!!")
@@ -136,6 +137,15 @@ function addPost() {
     return
   }
 
+  if (!location) {
+    toastr.error("Please enter Location!!")
+    return
+  }
+
+  if (!endDate) {
+    endDate = null
+  }
+
   if (!endTime) {
     endTime = null
   }
@@ -144,12 +154,9 @@ function addPost() {
     interval = null
   }
 
-  //write condition for location
   tags = tags.split(",")
   var data = {
-    "latitude": 40.69440700,
-    "longitude": -73.98652500,
-    "area_name": "NYU Tandon",
+    "area_name": location,
     "tags": tags,
     "note": status,
     "shared_with": sharedWith,
@@ -186,6 +193,7 @@ function addFilter() {
   var tags = document.getElementById("filterTags").value;
   var noteType = document.getElementById("noteType").value;
   var state = document.getElementById("selectState").value;
+  var location = document.getElementById("filterLocation").value;
   console.log("tags =", tags);
   if (!eventDate) {
     eventDate = null;
@@ -203,14 +211,15 @@ function addFilter() {
     state = null
   }
 
-  //write condition for location
+  if(!location){
+    location = null
+  }
+
   if (tags)
     tags = tags.split(",")
   var data = {
     "state": state,
-    "latitude": 40.69440700,
-    "longitude": -73.98652500,
-    "area_name": "NYU Tandon",
+    "area_name": location,
     "tags": tags,
     "user_type": noteType,
     "event_date": eventDate,

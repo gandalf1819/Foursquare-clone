@@ -13,7 +13,6 @@ var router = express.Router();
 
 
 router.post('/', fetchToken, function(req, res, next) {
-  console.log("req====", req);
   notesController.createNotes(req.body, req.user_details)
     .then(msg => {
       res.send(Message.generateMessage(200, {}, msg));
@@ -24,7 +23,7 @@ router.post('/', fetchToken, function(req, res, next) {
 });
 
 router.get('/', fetchToken, function(req, res, next) {
-  console.log("req====", req);
+
   notesController.getNotes(req.query.filter_id, req.user_details)
     .then(data => {
       res.send(Message.generateMessage(200, data, "Notes filtered Successfully!!"));
