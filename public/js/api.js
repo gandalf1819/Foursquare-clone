@@ -281,8 +281,8 @@ function displayDataInModal(noteId){
   console.log("notesMap =",notesMap);
   console.log("data to be shown in data modal =", notesMap[noteId]);
 
-  var modalBody = document.getElementById("modalBody");
-  modalBody.innerHTML=`<div class="col-xs-12 padding-left-none">
+  var modalBody = document.getElementById("modalSection");
+  modalBody.innerHTML=`<div class="modal-body" id="modalBody"><div class="col-xs-12 padding-left-none">
     <div class="label-text text-left">
         <strong>`+notesMap[noteId].first_name+` `+notesMap[noteId].last_name+`</strong>
     </div>
@@ -316,24 +316,59 @@ function displayDataInModal(noteId){
   </div>
   <div class="clearfix"></div>`;
   if(notesMap[noteId].are_comments_allowed == "Yes"){
-    modalBody.innerHTML+=`<div class="col-xs-12 margin-t1 padding-left-none">
+    modalBody.innerHTML+=`<div class="col-xs-12 margin-t1 padding-modal">
     <div class="label-text text-left">
         <strong>Comments</strong>
     </div>
   </div>
   <div class="clearfix"></div>
-  <div class="col-xs-12 margin-t1 padding-left-none">`;
+  <div class="col-xs-12 margin-t1 padding-modal">`;
 
   notesMap[noteId].comments.forEach(function(comment){
-    modalBody.innerHTML+=`<div class="label-text text-left">`+comment.comment+`- <strong>`+comment.first_name+` `+comment.last_name+`</strong></div>`
+    modalBody.innerHTML+=`<div class="label-text padding-modal">`+comment.comment+`- <strong>`+comment.first_name+` `+comment.last_name+`</strong></div>`
   })
 
-    modalBody.innerHTML+=`<div class="form-group margin-t1 padding-left-none">
+    modalBody.innerHTML+=`<div class="form-group margin-t1 padding-modal">
         <textarea rows="2" id="commentSection" class="form-control" placeholder="Add comment"></textarea>
     </div>
   </div>
-  <div class="clearfix"></div>`
+  <div class="clearfix"></div></div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="postComment(`+notesMap[noteId].note_id+`)" >Save</button>
+  </div>`
   }
+}
+
+function postComment(noteId){
+  var comment = document.getElementById("commentSection").value;
+  console.log("comment added =", comment);
+  if(!comment){
+    toastr.error("Comment in the comment box required!!")
+    return
+  }
+
+  var url = "http://localhost:3000/notes/comment/";
+  var data ={
+    "note_id":noteId,
+    "comment":comment
+  }
+  $.ajax({
+    url: url,
+    method: "POST",
+    data: JSON.stringify(data),
+    dataType: 'json',
+    contentType: "application/json",
+    success: function(data) {
+      if (data.Status == 200) {
+        toastr.success(data.Message);
+        if(data.Data)
+          notesMap[noteId]["comments"]=data.Data
+      } else {
+        toastr.error(data.Message)
+      }
+    },
+  });
 }
 
 function logout() {
