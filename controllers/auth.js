@@ -123,7 +123,6 @@ const auth = {
   friends
 }
 
-
 export {
   auth
 }
