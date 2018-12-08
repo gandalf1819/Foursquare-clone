@@ -2,6 +2,8 @@ import
 sequelize
 from '../models'
 
+const axios = require('axios')
+
 
 const updateFilters = (reqData, userDetails) => {
   return new Promise((resolve, reject) => {
@@ -13,21 +15,40 @@ const updateFilters = (reqData, userDetails) => {
     }
     let promise = Promise.resolve([]);
 
-    if (reqData.latitude && reqData.longitude && reqData.area_name) {
-      query = `insert into location (area_name, latitude, longitude) values(${reqData.area_name},${reqData.latitude},${reqData.longitude}) on duplicate key update area_name = ${reqData.area_name}, latitude = ${reqData.latitude}, longitude = ${reqData.longitude};`;
-      promise = sequelize.query(query, {
-        type: sequelize.QueryTypes.INSERT
-      })
+    if(reqData.area_name){
+      promise = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${reqData.area_name}&key=AIzaSyA6J8gVPzYgE8TK0oqEhjb2j81Eg1IoRVs`)
+      console.log(`geolocation api = https://maps.googleapis.com/maps/api/geocode/json?address=${reqData.area_name}&key=AIzaSyA6J8gVPzYgE8TK0oqEhjb2j81Eg1IoRVs`);
     }
 
     promise
+    .then(data=>{
+      console.log("geolocation data===",data);
+
+      if(data && data.data && data.data.results && data.data.results[0] && data.data.results[0].geometry && data.data.results[0].geometry.location && data.data.results[0].geometry.location.lat && data.data.results[0].geometry.location.lng){
+        reqData.latitude = data.data.results[0].geometry.location.lat.toFixed(8);
+        reqData.longitude = data.data.results[0].geometry.location.lng.toFixed(8);
+        console.log("reqData.latitude ==", reqData.latitude);
+        console.log("reqData.longitude ==", reqData.longitude);
+      }
+
+      if (reqData.latitude && reqData.longitude && reqData.area_name) {
+        query = `insert into location (area_name, latitude, longitude) values(${reqData.area_name},${reqData.latitude},${reqData.longitude}) on duplicate key update area_name = ${reqData.area_name}, latitude = ${reqData.latitude}, longitude = ${reqData.longitude};`;
+        return sequelize.query(query, {
+          type: sequelize.QueryTypes.INSERT
+        })
+      }
+      return Promise.resolve([]);
+    })
       .then(data => {
         console.log("data=", data);
-        query = `select loc_id from location where latitude = ${reqData.latitude} and longitude = ${reqData.longitude};`;
-        return sequelize.query(query, {
-          type: sequelize.QueryTypes.SELECT
-        })
+        if(reqData.latitude && reqData.longitude){
+          query = `select loc_id from location where latitude = ${reqData.latitude} and longitude = ${reqData.longitude};`;
+          return sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+          })
+        }
 
+        return Promise.resolve([]);
       })
       .then(data => {
         console.log("data =", data);

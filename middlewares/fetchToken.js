@@ -21,7 +21,6 @@ let fetchToken = (req, res, next)=>{
       type: sequelize.QueryTypes.SELECT
     })
     .then(data=>{
-      console.log("data===", data);
       if(!data[0]){
         res.send(Message.generateMessage(422, {}, "Not authorized to see the page as access token not found!!"));
         return

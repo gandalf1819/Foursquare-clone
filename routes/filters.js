@@ -13,7 +13,6 @@ var router = express.Router();
 
 
 router.post('/', fetchToken, function(req, res, next) {
-  console.log("req====", req);
   filtersController.updateFilters(req.body, req.user_details)
     .then(data => {
       res.send(Message.generateMessage(200, data, "Filter Added Successfully!!"));
