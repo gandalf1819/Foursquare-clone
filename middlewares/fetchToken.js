@@ -7,14 +7,14 @@ var Message = require('../util')
 let fetchToken = (req, res, next)=>{
   let accessToken = "", userDetails;
 
-  // if(req.cookies['x-access-token']){
-  //   accessToken = req.cookies['x-access-token'];
-  // }
-  // else{
-  //   res.send(Message.generateMessage(422, {}, "Not authorized to see the page as access token not found!!"));
-  //   return
-  // }
-  accessToken ="szNPAJoMEbXA";
+  if(req.cookies['x-access-token']){
+    accessToken = req.cookies['x-access-token'];
+  }
+  else{
+    res.send(Message.generateMessage(422, {}, "Not authorized to see the page as access token not found!!"));
+    return
+  }
+  //accessToken ="szNPAJoMEbXA";
 
   let query = `select user.* from user inner join token on user.id = token.user_id where token_id ="${accessToken}";`
   sequelize.query(query, {

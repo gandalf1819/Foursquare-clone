@@ -69,6 +69,7 @@ router.delete('/logout', function(req, res, next) {
 /* friends controller */
 router.post('/friends', function(req, res, next) {
   console.log("req====", req.cookies);
+  let accessToken="";
   if(req.cookies['x-access-token']){
     accessToken = req.cookies['x-access-token'];
   }
