@@ -103,13 +103,13 @@ const getNotes = (filterId, userDetails)=>{
 
         switch(userType){
           case "Public": query = `call get_public_notes(${filterId});`
-                        break;
+              break;
           case "Friends": query = `call get_friends_notes(${filterId});`
-                        break;
+              break;
           case "Private": query = `call get_private_notes(${filterId});`
-                        break;
-          default       : reject("No filter found!!")
-                          return
+              break;
+          default : reject("No filter found!!")
+              return
         }
         return sequelize.query(query, {
             type: sequelize.QueryTypes.SELECT
