@@ -48,7 +48,17 @@
                 <div id="friendsForm" class="form-wrapper friends-wrapper">
                     <div class="form-group">
                         <ul>
-
+                            <% friends.forEach(function(friends) { %>
+                                <%= friends.name %>
+                                <div class="img-wrapper">
+                                    <img src="/images/user.png" class="img-class img">
+                                </div>
+                                <div class="label-text text-left"></div>
+                                <div class="action-button text-right">
+                                    <button class="button btn btn-success">Follow</button>
+                                    <button class="button btn btn-light">Unfollow</button>
+                                </div>
+                            <% }) %>
                             <!-- <div class="img-wrapper">
                                 <img src="/images/user.png" class="img-class img">
                             </div>
@@ -56,30 +66,9 @@
                             <div class="action-button text-right">
                                 <button class="button btn btn-success">Follow</button>
                                 <button class="button btn btn-light">Unfollow</button>
-                            </div> -->
-
+                            </div> !-->
                         </ul>
                     </div>
-                    <!--<div class="form-group">
-                        <div class="img-wrapper">
-                            <img src="/images/user.png" class="img-class img">
-                        </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
-                        <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="img-wrapper">
-                            <img src="/images/user.png" class="img-class img">
-                        </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
-                        <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
-                        </div>
-                    </div>
-                    <div class="forgot"></div>
-                    <button type="submit" class="btn btn-primary">Submit</button>-->
                 </div>
                 <div id="friendRequestsForm" class="form-wrapper friends-wrapper">
                     <div class="form-group">
@@ -90,8 +79,11 @@
                         <div class="action-button text-right">
                             <button class="button btn btn-success">Follow</button>
                         </div>
+                        <div class="action-button text-right">
+                            <button class="button btn btn-light">Unfollow</button>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <div class="img-wrapper">
                             <img src="/images/user.png" class="img-class img">
                         </div>
@@ -99,16 +91,7 @@
                         <div class="action-button text-right">
                             <button class="button btn btn-success">Follow</button>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="img-wrapper">
-                            <img src="/images/user.png" class="img-class img">
-                        </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
-                        <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
-                        </div>
-                    </div>
+                    </div> !-->
                     <div class="forgot"></div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
@@ -156,9 +139,7 @@
 									</div>
 									<div class="clearfix"></div>
 									<div class="col-xs-12" id="postsList">
-
 										<!-- posts Lists data will be displayed here -->
-
 									</div>
                 </div>
 
