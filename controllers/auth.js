@@ -97,7 +97,7 @@ const logout = (accessToken)=>{
   })
 }
 
-const friends = (regData) => {
+/*const friends = (regData) => {
   return new Promise((resolve, reject) => {
       let query = `call get_friends_list(${regData.id})`;
       //let query = `SELECT u.first_name FROM USER AS u INNER JOIN friend_list AS fl ON u.id=fl.friend_id WHERE fl.user_id=${regData.id}`;
@@ -136,12 +136,6 @@ const friendRequests = (regData, userDetails)=> {
               case "Cancel":
                   query = `call get_friend_requests(${regData.id}, ${userDetails.id}, actionRequest);`
                   break;
-              case "Request Sent":
-                  query = `call get_friend_requests(${regData.id}, ${userDetails.id}, actionRequest);`
-                  break;
-              case  "Request Received":
-                  query = `call get_friend_requests(${regData.id}, ${userDetails.id}, actionRequest);`
-                  break;
               default:
                   reject("No action found!!")
                   return
@@ -152,7 +146,7 @@ const friendRequests = (regData, userDetails)=> {
 
         })
   })
-}
+}*/
 
 /*const getNotes = (filterId, userDetails)=>{
     return new Promise((resolve, reject)=>{
@@ -238,9 +232,9 @@ const friendRequests = (regData, userDetails)=> {
 const auth = {
   register,
   login,
-  logout,
-  friends,
-  friendRequests
+  logout
+  //friends,
+  //friendRequests
 }
 
 export {
