@@ -66,7 +66,7 @@ router.delete('/logout', function(req, res, next) {
     })
 });
 
-/* friends controller
+/* friends controller */
 router.post('/friends', function(req, res, next) {
   console.log("req====", req.cookies);
   let accessToken="";
@@ -90,6 +90,6 @@ router.post('/friends', function(req, res, next) {
     .catch(msg => {
       res.send(Message.generateMessage(422, {}, msg));
     })
-})*/
+})
 
 module.exports = router;
