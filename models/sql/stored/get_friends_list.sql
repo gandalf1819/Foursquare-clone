@@ -22,4 +22,5 @@ ELSE
 select filterId as filter_id;
 END IF;
 
-END FROM USER AS u INNER JOIN friend_list AS fl ON u.id=fl.friend_id WHERE fl.user_id=${regData.id};*?
+END FROM USER AS u INNER JOIN friend_list AS fl ON u.id=fl.friend_id WHERE fl.user_id=${regData.id};
+*/

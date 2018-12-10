@@ -14,6 +14,7 @@ CREATE PROCEDURE `create_note`(
 	IN `intervalVal` INT,
 	IN `areCommentsAllowed` VARCHAR(50)
 )
+
 LANGUAGE SQL
 NOT DETERMINISTIC
 CONTAINS SQL
