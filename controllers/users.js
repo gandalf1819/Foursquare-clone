@@ -4,19 +4,34 @@ import
 
 const randomstring = require("randomstring");
 
-const friends = (regData) => {
+const friends = (regData, accessToken) => {
     return new Promise((resolve, reject) => {
         //let query = `call get_friends_list(${regData.id})`;
         let query = `SELECT u.first_name FROM USER AS u INNER JOIN friend_list AS fl ON u.id=fl.friend_id WHERE fl.user_id=${regData.id}`;
         sequelize.query(query, {
             type: sequelize.QueryTypes.SELECT
         })
-            .then(data => {
-                console.log("query====", query);
-            })
-            .then(data => {
-                resolve("Friend list retrieved successfully")
-            })
+        .then(data => {
+            console.log("query====", query);
+            resolve("Friend list retrieved successfully")
+        })
+        let query = `SELECT * FROM friend_list WHERE action='Request Sent'`;
+        sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+        })
+        .then (data => {
+            resolve("Friend Request Fetched Successfully!")
+        })
+        let query = `INSERT INTO friend_list WHERE action='Request Sent'`;
+        sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+        })
+        .then(data => {
+            resolve("Friend Request accepted successfully")
+        })
+        .then(data => {
+            resolve("Friend list retrieved successfully")
+        })
             .catch(err => {
                 console.log("err===", err);
                 reject("Error occured during data retrieval!")
@@ -28,8 +43,10 @@ const friendRequests = (regData, userDetails)=> {
     return new Promise((resolve, reject) => {
 
         let actionRequest, query = {};
+        let query = `SELECT * FROM friend_list WHERE action='Request Sent'`;
         //let query = `call get_friend_requests(${regData.id}, ${userDetails.id}, actionRequest)`;
 
+        let query = `INSERT INTO friend_list WHERE action='Approved'`;
         sequelize.query(query, {
             type: sequelize.QueryTypes.SELECT
         })

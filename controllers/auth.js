@@ -97,7 +97,9 @@ const logout = (accessToken)=>{
   })
 }
 
-/*const friends = (regData) => {
+
+/* Fetch Friend List after Login */
+const friends = (regData, accessToken) => {
   return new Promise((resolve, reject) => {
       let query = `call get_friends_list(${regData.id})`;
       //let query = `SELECT u.first_name FROM USER AS u INNER JOIN friend_list AS fl ON u.id=fl.friend_id WHERE fl.user_id=${regData.id}`;
@@ -117,6 +119,8 @@ const logout = (accessToken)=>{
   })
 }
 
+
+/* Show Friend Requests */
 const friendRequests = (regData, userDetails)=> {
   return new Promise((resolve, reject) => {
 
@@ -146,95 +150,15 @@ const friendRequests = (regData, userDetails)=> {
 
         })
   })
-}*/
+}
 
-/*const getNotes = (filterId, userDetails)=>{
-    return new Promise((resolve, reject)=>{
-        let notes,
-            noteIds="",
-            notesMap={},
-            query = `select user_type from filter where filter_id = ${filterId}`;
-        sequelize.query(query, {
-            type: sequelize.QueryTypes.SELECT
-        })
-            .then(data=>{
-                console.log("data=",data);
-                let userType = (data[0] && data[0].user_type)?data[0].user_type:null;
-
-                switch(userType){
-                    case "Public": query = `call get_public_notes(${filterId});`
-                        break;
-                    case "Friends": query = `call get_friends_notes(${filterId});`
-                        break;
-                    case "Private": query = `call get_private_notes(${filterId});`
-                        break;
-                    default       : reject("No filter found!!")
-                        return
-                }
-                return sequelize.query(query, {
-                    type: sequelize.QueryTypes.SELECT
-                })
-            })
-            .then(data=>{
-                console.log("data=",Object.values(JSON.parse(JSON.stringify(data[0]))));
-                notes =Object.values(JSON.parse(JSON.stringify(data[0])));
-
-                notes.forEach((item,index)=>{
-                    if(index == 0)
-                        noteIds+=`${item.note_id}`
-                    noteIds+=`, ${item.note_id}`
-                    notesMap[item.note_id] = item
-                    notesMap[item.note_id]["comments"] =[]
-                    notesMap[item.note_id]["tags"] =[]
-                })
-
-                if(noteIds.length>0){
-                    query = `select * from note_tag inner join tag on note_tag.tag_id=tag.tag_id where note_tag.note_id in (${noteIds})`;
-                    return sequelize.query(query, {
-                        type: sequelize.QueryTypes.SELECT
-                    })
-                }
-
-                return Promise.resolve([])
-            })
-            .then(data=>{
-                if(data.length > 0){
-                    data.forEach((item,index)=>{
-                        notesMap[item.note_id]["tags"].push(item)
-                    })
-                }
-
-                if(noteIds.length>0){
-                    query = `select note_comment.*, user.first_name, user.last_name from note_comment inner join note on note_comment.note_id=note.note_id inner join user on note_comment.user_id = user.id where note_comment.note_id in (${noteIds}) order by note_comment.id`;
-                    return sequelize.query(query, {
-                        type: sequelize.QueryTypes.SELECT
-                    })
-                }
-                return Promise.resolve([])
-
-            })
-            .then(data=>{
-                if(data.length > 0){
-                    data.forEach((item,index)=>{
-                        notesMap[item.note_id]["comments"].push(item)
-                    })
-                }
-
-                resolve(Object.values(notesMap))
-            })
-            .catch(err=>{
-                console.log("err=",err);
-                reject("Error occured during filtering notes. Please contact your system administrator!!")
-            })
-    })
-}*/
 
 const auth = {
   register,
   login,
   logout
-  //friends,
-  //friendRequests
+  friends,
+  friendRequests
 }
 
 export {
