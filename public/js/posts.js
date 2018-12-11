@@ -4,13 +4,66 @@ $(document).ready(function() {
     plugins: ['restore_on_backspace'],
     persist: false,
     createOnBlur: true,
-    create: true
+    searchField: "tag",
+    valueField: "tag",
+    labelField: "tag",
+    create: true,
+    options: [],
+    onInitialize: function() {
+      var selectize = this;
+      var url = "http://localhost:3000/tags"
+      $.ajax({
+        url: url,
+        method: "GET",
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(data) {
+          console.log("tag data =", data);
+          if (data.Status == 200) {
+            data.Data.forEach(function(tag) {
+              selectize.addOption({
+                id: tag.tag_id,
+                tag: tag.tag_name
+              })
+            })
+
+          }
+        }
+      });
+    }
   });
   $('#filterTags').selectize({
     plugins: ['restore_on_backspace'],
     persist: false,
     createOnBlur: true,
-    create: true
+    searchField: "tag",
+    valueField: "tag",
+    labelField: "tag",
+    create: true,
+    options: [],
+    onInitialize: function() {
+      console.log("onInitialize called===");
+      var selectize = this;
+      var url = "http://localhost:3000/tags"
+      $.ajax({
+        url: url,
+        method: "GET",
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(data) {
+          console.log("tag data =", data);
+          if (data.Status == 200) {
+            data.Data.forEach(function(tag) {
+              selectize.addOption({
+                id: tag.tag_id,
+                tag: tag.tag_name
+              })
+            })
+
+          }
+        }
+      });
+    }
   });
   $("#startDate").datepicker({
     dateFormat: 'yy-mm-dd'
@@ -38,10 +91,37 @@ $(document).ready(function() {
     },
     dropdownParent: 'body'
   });
+  addFilter()
+  getStates()
 })
 
 
+function autoFill() {
+  console.log("autoFIll called");
+  var state = document.getElementById("selectState").value
+  console.log("state selected =", state);
+  var currentState = userStates[state];
+  console.log("currentState=", currentState);
 
+  document.getElementById("filterLocation").value = currentState.area_name;
+  //document.getElementById("filterTags").value=currentState.tags;
+  document.getElementById("noteType").value = currentState.user_type;
+  document.getElementById("eventDate").value = currentState.event_date;
+  document.getElementById("eventTime").value = currentState.event_time;
+
+  var $select = $("#filterTags").selectize();
+  var selectize = $select[0].selectize;
+  if (currentState.tags) {
+    console.log("selectize =", selectize);
+    var tags = currentState.tags.split(",")
+    selectize.setValue(tags)
+  }
+  else{
+    selectize.clear()
+  }
+
+
+}
 
 function toggleTab(tabId) {
 

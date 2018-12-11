@@ -1,4 +1,5 @@
-var notesMap={};
+var notesMap = {};
+var userStates = {};
 
 function registerUser() {
 
@@ -47,12 +48,12 @@ function registerUser() {
   });
 }
 
-function followUser(followerId, action, event) {
+function followUser(friendId, action, event) {
   var data = {
-    "followerId": parseInt(followerId),
+    "friend_id": friendId,
   }
-  var url = "http://localhost:9090/"
-  url += (action == "Follow") ? "follow/" : "unfollow/";
+  var url = "http://localhost:3000/relationships/"
+  url += (action == "Add") ? "add-friend/" : "delete-friend/";
   $.ajax({
     url: url,
     method: "POST",
@@ -60,9 +61,43 @@ function followUser(followerId, action, event) {
     dataType: 'json',
     contentType: "application/json",
     success: function(data) {
-      action = (action == "Follow") ? "UnFollow" : "Follow";
-      event.target.setAttribute("onclick", "followUser('" + followerId + "','" + action + "',event)");
-      event.target.innerHTML = action
+      if (data.Status == 200) {
+        action = (action == "Add") ? "Delete" : "Add";
+        if (action == "Delete") {
+          event.target.classList.remove("btn-success")
+          event.target.classList.add("btn-danger")
+        } else {
+          event.target.classList.add("btn-success")
+          event.target.classList.remove("btn-danger")
+        }
+        event.target.setAttribute("onclick", "followUser('" + friendId + "','" + action + "',event)");
+        event.target.innerHTML = action + " Friend"
+        toastr.success(data.Message);
+      } else {
+        toastr.error(data.Message)
+      }
+    },
+  });
+}
+
+function performAction(friendId, action) {
+  var url = "http://localhost:3000/relationships/action"
+  var data = {
+    "friend_id": friendId,
+    "action": action
+  }
+  $.ajax({
+    url: url,
+    method: "POST",
+    data: JSON.stringify(data),
+    dataType: 'json',
+    contentType: "application/json",
+    success: function(data) {
+      if (data.Status == 200) {
+        toastr.success(data.Message);
+      } else {
+        toastr.error(data.Message)
+      }
     },
   });
 }
@@ -187,6 +222,26 @@ function addPost() {
   });
 }
 
+function getStates() {
+  var url = "http://localhost:3000/filters/states/";
+
+  $.ajax({
+    url: url,
+    method: "GET",
+    dataType: 'json',
+    contentType: "application/json",
+    success: function(data) {
+      if (data.Status == 200) {
+
+        data.Data.forEach(function(state) {
+          userStates[state.state] = state;
+        })
+        console.log("userStates =", userStates);
+      }
+    },
+  });
+}
+
 function addFilter() {
   var eventDate = document.getElementById("eventDate").value;
   var eventTime = document.getElementById("eventTime").value;
@@ -211,7 +266,7 @@ function addFilter() {
     state = null
   }
 
-  if(!location){
+  if (!location) {
     location = null
   }
 
@@ -240,7 +295,7 @@ function addFilter() {
         var filterId;
         if (data.Data && data.Data.filter_id) {
           filterId = data.Data.filter_id;
-          url = "http://localhost:3000/notes?filter_id="+filterId
+          url = "http://localhost:3000/notes?filter_id=" + filterId
           $.ajax({
             url: url,
             method: "GET",
@@ -265,19 +320,19 @@ function addFilter() {
   });
 }
 
-function addElementsToEventsList(data){
-console.log("add Elements to Events List called");
+function addElementsToEventsList(data) {
+  console.log("add Elements to Events List called");
   var postsElem = document.getElementById("postsList");
-  postsElem.innerHTML=""
-  data.forEach(function(post){
-    notesMap[post.note_id]=post
-    postsElem.innerHTML+=`<div class='col-xs-12'>
+  postsElem.innerHTML = ""
+  data.forEach(function(post) {
+    notesMap[post.note_id] = post
+    postsElem.innerHTML += `<div class='col-xs-12'>
     <div class ='col-xs-6'>
         <div class="label-text text-left margin-t18"><strong>
-    `+post.first_name+" "+post.last_name+`</strong></div><div class="label-text text-left">-
-    `+post.description+`</div></div>
+    ` + post.first_name + " " + post.last_name + `</strong></div><div class="label-text text-left">-
+    ` + post.description + `</div></div>
     <div class ='col-xs-3 margin-t18'>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="displayDataInModal(`+post.note_id+`)">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="displayDataInModal(` + post.note_id + `)">
         Details
       </button>
     </div></div>`
@@ -285,47 +340,47 @@ console.log("add Elements to Events List called");
   })
 }
 
-function displayDataInModal(noteId){
-  console.log("noteId=",noteId);
-  console.log("notesMap =",notesMap);
+function displayDataInModal(noteId) {
+  console.log("noteId=", noteId);
+  console.log("notesMap =", notesMap);
   console.log("data to be shown in data modal =", notesMap[noteId]);
 
   var modalBody = document.getElementById("modalSection");
-  modalBody.innerHTML=`<div class="modal-body" id="modalBody"><div class="col-xs-12 padding-left-none">
+  modalBody.innerHTML = `<div class="modal-body" id="modalBody"><div class="col-xs-12 padding-left-none">
     <div class="label-text text-left">
-        <strong>`+notesMap[noteId].first_name+` `+notesMap[noteId].last_name+`</strong>
+        <strong>` + notesMap[noteId].first_name + ` ` + notesMap[noteId].last_name + `</strong>
     </div>
-    <div class="label-text text-left">`+notesMap[noteId].description+`</div>
+    <div class="label-text text-left">` + notesMap[noteId].description + `</div>
   </div>
   <div class="clearfix"></div>
   <div class="col-xs-12 padding-left-none">
     <div class="col-xs-4 padding-left-none">
       <label for="modalLoc" class="pull-left margin-t1">Location:</label>
-      <input type="text" id="modalLoc" class="form-control" placeholder="Location" value ="`+notesMap[noteId].area_name+`" disabled>
+      <input type="text" id="modalLoc" class="form-control" placeholder="Location" value ="` + notesMap[noteId].area_name + `" disabled>
     </div>
     <div class="col-xs-4 padding-left-none">
         <label for="modalStartDate" class="pull-left margin-t1">Start Date:</label>
-        <input type="text" id="modalStartDate" class="form-control" placeholder="Start Date" value ="`+notesMap[noteId].start_date+`" disabled>
+        <input type="text" id="modalStartDate" class="form-control" placeholder="Start Date" value ="` + notesMap[noteId].start_date + `" disabled>
     </div>
     <div class="col-xs-4 padding-left-none">
         <label for="modalEndDate" class="pull-left margin-t1">End Date:</label>
-        <input type="text" id="modalEndDate" class="form-control" placeholder="End Date" value ="`+notesMap[noteId].end_date+`" disabled>
+        <input type="text" id="modalEndDate" class="form-control" placeholder="End Date" value ="` + notesMap[noteId].end_date + `" disabled>
     </div>
   </div>
   <div class="clearfix"></div>
   <div class ="col-xs-12 padding-left-none">
     <div class="col-xs-4 padding-left-none">
         <label for="modalStartTime" class="pull-left margin-t1">Start Time:</label>
-        <input type="text" id="modalStartTime" class="form-control" placeholder="Start Time" value ="`+notesMap[noteId].start_time+`" disabled>
+        <input type="text" id="modalStartTime" class="form-control" placeholder="Start Time" value ="` + notesMap[noteId].start_time + `" disabled>
     </div>
     <div class="col-xs-4 padding-left-none">
         <label for="modalEndTime" class="pull-left margin-t1">End Time:</label>
-        <input type="text" id="modalEndTime" class="form-control" placeholder="End Time" value ="`+notesMap[noteId].end_time+`" disabled>
+        <input type="text" id="modalEndTime" class="form-control" placeholder="End Time" value ="` + notesMap[noteId].end_time + `" disabled>
     </div>
   </div>
   <div class="clearfix"></div>`;
-  if(notesMap[noteId].are_comments_allowed == "Yes"){
-    modalBody.innerHTML+=`<div class="col-xs-12 margin-t1 padding-modal">
+  if (notesMap[noteId].are_comments_allowed == "Yes") {
+    modalBody.innerHTML += `<div class="col-xs-12 margin-t1 padding-modal">
     <div class="label-text text-left">
         <strong>Comments</strong>
     </div>
@@ -333,34 +388,34 @@ function displayDataInModal(noteId){
   <div class="clearfix"></div>
   <div class="col-xs-12 margin-t1 padding-modal">`;
 
-  notesMap[noteId].comments.forEach(function(comment){
-    modalBody.innerHTML+=`<div class="label-text padding-modal">`+comment.comment+`- <strong>`+comment.first_name+` `+comment.last_name+`</strong></div>`
-  })
+    notesMap[noteId].comments.forEach(function(comment) {
+      modalBody.innerHTML += `<div class="label-text padding-modal">` + comment.comment + `- <strong>` + comment.first_name + ` ` + comment.last_name + `</strong></div>`
+    })
 
-    modalBody.innerHTML+=`<div class="form-group margin-t1 padding-modal">
+    modalBody.innerHTML += `<div class="form-group margin-t1 padding-modal">
         <textarea rows="2" id="commentSection" class="form-control" placeholder="Add comment"></textarea>
     </div>
   </div>
   <div class="clearfix"></div></div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="postComment(`+notesMap[noteId].note_id+`)" >Save</button>
+    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="postComment(` + notesMap[noteId].note_id + `)" >Save</button>
   </div>`
   }
 }
 
-function postComment(noteId){
+function postComment(noteId) {
   var comment = document.getElementById("commentSection").value;
   console.log("comment added =", comment);
-  if(!comment){
+  if (!comment) {
     toastr.error("Comment in the comment box required!!")
     return
   }
 
   var url = "http://localhost:3000/notes/comment/";
-  var data ={
-    "note_id":noteId,
-    "comment":comment
+  var data = {
+    "note_id": noteId,
+    "comment": comment
   }
   $.ajax({
     url: url,
@@ -371,8 +426,8 @@ function postComment(noteId){
     success: function(data) {
       if (data.Status == 200) {
         toastr.success(data.Message);
-        if(data.Data)
-          notesMap[noteId]["comments"]=data.Data
+        if (data.Data)
+          notesMap[noteId]["comments"] = data.Data
       } else {
         toastr.error(data.Message)
       }

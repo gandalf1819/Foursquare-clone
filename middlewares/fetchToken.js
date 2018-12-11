@@ -10,10 +10,12 @@ let fetchToken = (req, res, next)=>{
   if(req.cookies['x-access-token']){
     accessToken = req.cookies['x-access-token'];
   }
-  else{
-    res.send(Message.generateMessage(422, {}, "Not authorized to see the page as access token not found!!"));
-    return
+  else if(req.headers['x-access-token']){
+    accessToken = req.headers['x-access-token'];
   }
+  else
+    return res.redirect('/login/')
+
   //accessToken ="szNPAJoMEbXA";
 
   let query = `select user.* from user inner join token on user.id = token.user_id where token_id ="${accessToken}";`
@@ -26,6 +28,7 @@ let fetchToken = (req, res, next)=>{
         return
       }
       req.user_details = data[0];
+      req.user_details['x-access-token']= accessToken
       next();
     })
     .catch(err=>{

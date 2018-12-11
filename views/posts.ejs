@@ -46,76 +46,53 @@
                     <br>
                 </div>
                 <div id="friendsForm" class="form-wrapper friends-wrapper">
+                  <% relationships.forEach(function(user){%>
                     <div class="form-group">
                         <div class="img-wrapper">
                             <img src="/images/user.png" class="img-class img">
                         </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
+                        <div class="label-text text-left"><%= user.first_name%> <%= user.last_name%></div>
                         <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
+                          <% if(user.action && user.action!="Rejected") {%>
+                            <button class="button btn btn-danger" onclick ="followUser('<%= user.id %>', 'Delete', event )">Delete Friend</button>
+                          <% } else {%>
+                            <button class="button btn btn-success" onclick="followUser('<%= user.id %>', 'Add', event )">Add Friend</button>
+                          <% } %>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="img-wrapper">
-                            <img src="/images/user.png" class="img-class img">
-                        </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
-                        <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="img-wrapper">
-                            <img src="/images/user.png" class="img-class img">
-                        </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
-                        <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
-                        </div>
-                    </div>
-                    <div class="forgot"></div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                  <% });%>
+                  <% if(relationships.length == 0){%>
+                    <div class="col-xs-12"><h3>No Data</h3></div>
+                    <div class="clearfix"></div>
+                  <% }%>
                 </div>
                 <div id="friendRequestsForm" class="form-wrapper friends-wrapper">
+                  <% notifications.forEach(function(user){%>
                     <div class="form-group">
                         <div class="img-wrapper">
                             <img src="/images/user.png" class="img-class img">
                         </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
+                        <div class="label-text text-left"><%= user.first_name%> <%= user.last_name%></div>
                         <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
+                            <button class="button btn btn-success" onclick="performAction('<%= user.id %>', 'Accepted')">Accept</button>
+                            <button class="button btn btn-danger" onclick="performAction('<%= user.id %>', 'Rejected')">Reject</button>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="img-wrapper">
-                            <img src="/images/user.png" class="img-class img">
-                        </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
-                        <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="img-wrapper">
-                            <img src="/images/user.png" class="img-class img">
-                        </div>
-                        <div class="label-text text-left">Nikhil Nar</div>
-                        <div class="action-button text-right">
-                            <button class="button btn btn-success">Follow</button>
-                        </div>
-                    </div>
-                    <div class="forgot"></div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <% });%>
+                    <% if(notifications.length == 0){%>
+                      <div class="col-xs-12"><h3>No Data</h3></div>
+                      <div class="clearfix"></div>
+                    <% }%>
                 </div>
                 <div id="newsFeedForm" class="form-wrapper table-responsive">
 									<div class ="col-xs-12">
 										<div class ="col-xs-3">
 											<label for="selectState" class="pull-left">State:</label>
-											<select id="selectState" class="demo-default" placeholder="Select a State">
-												<option value="">Select a state...</option>
-												<option value="at lunch">at lunch</option>
-												<option value="hungry">hungry</option>
-												<option value="shopping">shopping</option>
+											<select id="selectState" class="demo-default" placeholder="Select a State" onchange ="autoFill()">
+                        <option value="">Select a state...</option>
+                        <% states.forEach(function(state){%>
+                          <option value="<%= state.state%>"><%= state.state%></option>
+                        <% });%>
 											</select>
 										</div>
 										<div class="col-xs-3">
@@ -124,7 +101,7 @@
 										</div>
 										<div class="col-xs-3">
 											<label for="filterTags" class="pull-left">Tags:</label>
-											<input type="text" id="filterTags" class="form-control" value="">
+											<input type="text" id="filterTags" class="form-control" >
 										</div>
 										<div class="col-xs-3">
 											<label for="noteType" class="pull-left">Notes Type:</label>

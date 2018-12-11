@@ -15,33 +15,33 @@ const updateFilters = (reqData, userDetails) => {
     }
     let promise = Promise.resolve([]);
 
-    if(reqData.area_name){
+    if (reqData.area_name) {
       promise = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${reqData.area_name}&key=AIzaSyA6J8gVPzYgE8TK0oqEhjb2j81Eg1IoRVs`)
       console.log(`geolocation api = https://maps.googleapis.com/maps/api/geocode/json?address=${reqData.area_name}&key=AIzaSyA6J8gVPzYgE8TK0oqEhjb2j81Eg1IoRVs`);
     }
 
     promise
-    .then(data=>{
-      console.log("geolocation data===",data);
+      .then(data => {
+        console.log("geolocation data===", data);
 
-      if(data && data.data && data.data.results && data.data.results[0] && data.data.results[0].geometry && data.data.results[0].geometry.location && data.data.results[0].geometry.location.lat && data.data.results[0].geometry.location.lng){
-        reqData.latitude = data.data.results[0].geometry.location.lat.toFixed(8);
-        reqData.longitude = data.data.results[0].geometry.location.lng.toFixed(8);
-        console.log("reqData.latitude ==", reqData.latitude);
-        console.log("reqData.longitude ==", reqData.longitude);
-      }
+        if (data && data.data && data.data.results && data.data.results[0] && data.data.results[0].geometry && data.data.results[0].geometry.location && data.data.results[0].geometry.location.lat && data.data.results[0].geometry.location.lng) {
+          reqData.latitude = data.data.results[0].geometry.location.lat.toFixed(8);
+          reqData.longitude = data.data.results[0].geometry.location.lng.toFixed(8);
+          console.log("reqData.latitude ==", reqData.latitude);
+          console.log("reqData.longitude ==", reqData.longitude);
+        }
 
-      if (reqData.latitude && reqData.longitude && reqData.area_name) {
-        query = `insert into location (area_name, latitude, longitude) values(${reqData.area_name},${reqData.latitude},${reqData.longitude}) on duplicate key update area_name = ${reqData.area_name}, latitude = ${reqData.latitude}, longitude = ${reqData.longitude};`;
-        return sequelize.query(query, {
-          type: sequelize.QueryTypes.INSERT
-        })
-      }
-      return Promise.resolve([]);
-    })
+        if (reqData.latitude && reqData.longitude && reqData.area_name) {
+          query = `insert into location (area_name, latitude, longitude) values(${reqData.area_name},${reqData.latitude},${reqData.longitude}) on duplicate key update area_name = ${reqData.area_name}, latitude = ${reqData.latitude}, longitude = ${reqData.longitude};`;
+          return sequelize.query(query, {
+            type: sequelize.QueryTypes.INSERT
+          })
+        }
+        return Promise.resolve([]);
+      })
       .then(data => {
         console.log("data=", data);
-        if(reqData.latitude && reqData.longitude){
+        if (reqData.latitude && reqData.longitude) {
           query = `select loc_id from location where latitude = ${reqData.latitude} and longitude = ${reqData.longitude};`;
           return sequelize.query(query, {
             type: sequelize.QueryTypes.SELECT
@@ -78,12 +78,12 @@ const updateFilters = (reqData, userDetails) => {
       .then(data => {
         reqData.state_id = (data[0] && data[0].state_id) ? data[0].state_id : null;
 
-        if(reqData.eventDate){
-          reqData.eventDate =`"${reqData.eventDate}"`;
+        if (reqData.event_date) {
+          reqData.event_date = `"${reqData.event_date}"`;
         }
 
-        if(reqData.eventTime){
-          reqData.eventTime =`"${reqData.eventTime}"`;
+        if (reqData.event_time) {
+          reqData.event_time = `"${reqData.event_time}"`;
         }
 
         query = `call create_filter(${userDetails.id}, ${reqData.state_id}, "${reqData.user_type}", ${reqData.loc_id},${reqData.event_date},${reqData.event_time} );`;
@@ -132,7 +132,7 @@ const updateFilters = (reqData, userDetails) => {
       })
       .then(data => {
         console.log("data=", data);
-        if (data && data.length!=0) {
+        if (data && data.length != 0) {
           query = "insert into filter_tag (filter_id, tag_id) values "
           data.forEach((item, index) => {
             if (index == 0) {
@@ -164,7 +164,18 @@ const updateFilters = (reqData, userDetails) => {
 
 const getStates = (userDetails) => {
   return new Promise((resolve, reject) => {
-    let query = `select * from user_state where user_id = ${userDetails.id}`;
+    let query = `select f.filter_id ,us.state, lo.area_name, f.user_type, f.event_date, f.event_time, group_concat(tag_name) as tags from filter f
+left outer join user_state us
+on f.state_id = us.state_id
+left outer join location lo
+on f.loc_id=lo.loc_id
+left outer join filter_tag ft
+on f.filter_id=ft.filter_id
+left outer join tag t
+on ft.tag_id = t.tag_id
+where f.user_id =${userDetails.id}
+group by f.filter_id
+`;
     sequelize.query(query, {
         type: sequelize.QueryTypes.SELECT
       })
