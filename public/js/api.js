@@ -25,6 +25,11 @@ function registerUser() {
     return
   }
 
+  if(!validateEmail(email)){
+    toastr.error("Please enter a valid Email!")
+    return
+  }
+
   var registerData = {
     "firstName": firstName,
     "lastName": lastName,
@@ -62,16 +67,22 @@ function followUser(friendId, action, event) {
     contentType: "application/json",
     success: function(data) {
       if (data.Status == 200) {
-        action = (action == "Add") ? "Delete" : "Add";
-        if (action == "Delete") {
+        if(action == "Add"){
           event.target.classList.remove("btn-success")
-          event.target.classList.add("btn-danger")
-        } else {
+          event.target.classList.add("btn-info")
+          event.target.innerHTML = "Undo Request"
+        }
+        else{
           event.target.classList.add("btn-success")
           event.target.classList.remove("btn-danger")
+          event.target.classList.remove("btn-info")
+          event.target.innerHTML = "Add Friend"
         }
+
+        action = (action == "Add") ? "Delete" : "Add";
+
         event.target.setAttribute("onclick", "followUser('" + friendId + "','" + action + "',event)");
-        event.target.innerHTML = action + " Friend"
+
         toastr.success(data.Message);
       } else {
         toastr.error(data.Message)

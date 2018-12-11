@@ -3,6 +3,7 @@ sequelize
 from '../models'
 
 const randomstring = require("randomstring");
+const md5 = require("md5");
 
 const register = (regData) => {
   return new Promise((resolve, reject) => {
@@ -35,17 +36,24 @@ const register = (regData) => {
 const login = (loginData, accessToken)=>{
   return new Promise((resolve,reject)=>{
     let token, userId;
-    let query = `select id from user where email ="${loginData.email}" limit 1;`
+    let query = `select id, password from user where email ="${loginData.email}" limit 1;`
     sequelize.query(query, {
         type: sequelize.QueryTypes.SELECT
       })
       .then(data=>{
+        console.log("data  =", data);
         if(data.length==0){
           reject("No user found!!")
           return
         }
 
+        if(data[0].password != md5(loginData.password)){
+          reject("Invalid password!!")
+          return
+        }
+
         userId = data[0].id;
+
         if(accessToken==""){
           return Promise.resolve([])
         }
@@ -56,6 +64,10 @@ const login = (loginData, accessToken)=>{
 
       })
       .then(data=>{
+        console.log("data in then =", data);
+        if (!data){
+          return
+        }
         if(data.length!=0){
           resolve(accessToken)
           return
