@@ -53,10 +53,12 @@
                         </div>
                         <div class="label-text text-left"><%= user.first_name%> <%= user.last_name%></div>
                         <div class="action-button text-right">
-                          <% if(user.action && user.action!="Rejected") {%>
-                            <button class="button btn btn-danger" onclick ="followUser('<%= user.id %>', 'Delete', event )">Delete Friend</button>
+                          <% if(user.action == "Accepted") {%>
+                            <button class="btn btn-danger" onclick ="followUser('<%= user.id %>', 'Delete', event )">Delete Friend</button>
+                          <% } else if(user.action == "Request_Received") {%>
+                            <button class="btn btn-info" onclick ="followUser('<%= user.id %>', 'Undo', event )">Undo Request</button>
                           <% } else {%>
-                            <button class="button btn btn-success" onclick="followUser('<%= user.id %>', 'Add', event )">Add Friend</button>
+                            <button class="btn btn-success" onclick="followUser('<%= user.id %>', 'Add', event )">Add Friend</button>
                           <% } %>
                         </div>
                     </div>

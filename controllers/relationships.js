@@ -6,7 +6,7 @@ const axios = require('axios')
 
 const getFriendsSuggestions = (userDetails) => {
   return new Promise((resolve, reject) => {
-    let query = `select * from user u left outer join friend_list fl on u.id = fl.user_id and fl.friend_id =${userDetails.id} where u.id!=${userDetails.id}`;
+    let query = `select * from user u left outer join friend_list fl on u.id = fl.user_id and fl.friend_id =${userDetails.id} where u.id!=${userDetails.id} and (action is null or action!="Request_Sent")`;
     sequelize.query(query, {
       type: sequelize.QueryTypes.SELECT
     })
