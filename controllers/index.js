@@ -1,3 +1,5 @@
 export * from './auth'
 export * from './notes'
 export * from './filters'
+export * from './relationships'
+export * from './posts'
