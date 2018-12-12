@@ -36,6 +36,7 @@ and n.shared_with ="Public"
 inner join
 location l on n.loc_id = l.loc_id
 where (case when latitudeValue is not null and longitudeValue is not null then lat_lng_distance(l.latitude,l.longitude, latitudeValue, longitudeValue) <= n.radius_of_interest else 1 end)
+and (case when eventDate is not null then n.start_date <= eventDate else 1 end)
 and (case when eventDate is null then 1 when eventDate > n.start_date then 1 when eventTime is null then 1 when eventDate = n.start_date then n.start_time <= eventTime else 1 end)
 and (case when eventDate is null then 1 when n.end_date is null and n.end_time is null and n.interval is not null then datediff(eventDate, n.start_date)%n.interval = 0 else 1 end)
 and (case when eventTime is null then 1 when n.end_date is null and n.end_time is not null and n.interval is null then n.start_time <=eventTime and n.end_time >= eventTime else 1 end)

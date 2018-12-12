@@ -38,6 +38,12 @@ const createNotes = (reqData, userDetails) => {
       })
       .then(data => {
         console.log("data=", data);
+
+        if(!reqData.latitude || !reqData.longitude){
+          reject("Location not found!!")
+          return
+        }
+
         query = `select loc_id from location where latitude = ${reqData.latitude} and longitude = ${reqData.longitude};`;
         return sequelize.query(query, {
           type: sequelize.QueryTypes.SELECT
@@ -46,6 +52,9 @@ const createNotes = (reqData, userDetails) => {
       })
       .then(data => {
         console.log("data =", data);
+        if(!data){
+          return
+        }
 
         reqData.loc_id = (data[0] && data[0].loc_id) ? data[0].loc_id : null;
         if (reqData.end_date) {
@@ -61,6 +70,9 @@ const createNotes = (reqData, userDetails) => {
 
       })
       .then(data => {
+        if(!data){
+          return
+        }
         console.log("data=", data);
         noteId = JSON.parse(JSON.stringify(data[0][0])).note_id;
         query = "insert into tag (tag_name) values "
@@ -80,6 +92,9 @@ const createNotes = (reqData, userDetails) => {
         })
       })
       .then(data => {
+        if(!data){
+          return
+        }
         console.log("inClause =", inClause);
         query = `select tag_id, tag_name from tag where tag_name in (${inClause.substring(0, inClause.length-1)});`;
         return sequelize.query(query, {
@@ -88,6 +103,9 @@ const createNotes = (reqData, userDetails) => {
 
       })
       .then(data => {
+        if(!data){
+          return
+        }
         console.log("data=", data);
         query = "insert into note_tag (note_id, tag_id) values "
         data.forEach((item, index) => {
