@@ -349,6 +349,12 @@ function addElementsToEventsList(data) {
     </div></div>`
     console.log("notesMap =", notesMap);
   })
+
+  if(data.length==0){
+    postsElem.innerHTML +=`<div class="col-xs-12"><h3>No Data</h3></div>
+    <div class="clearfix"></div>`
+
+  }
 }
 
 function displayDataInModal(noteId) {
@@ -357,6 +363,8 @@ function displayDataInModal(noteId) {
   console.log("data to be shown in data modal =", notesMap[noteId]);
 
   var modalBody = document.getElementById("modalSection");
+  var endDate = (notesMap[noteId].end_date)?notesMap[noteId].end_date:"";
+  var endTime = (notesMap[noteId].end_time)?notesMap[noteId].end_time:"";
   modalBody.innerHTML = `<div class="modal-body" id="modalBody"><div class="col-xs-12 padding-left-none">
     <div class="label-text text-left">
         <strong>` + notesMap[noteId].first_name + ` ` + notesMap[noteId].last_name + `</strong>
@@ -375,7 +383,7 @@ function displayDataInModal(noteId) {
     </div>
     <div class="col-xs-4 padding-left-none">
         <label for="modalEndDate" class="pull-left margin-t1">End Date:</label>
-        <input type="text" id="modalEndDate" class="form-control" placeholder="End Date" value ="` + notesMap[noteId].end_date + `" disabled>
+        <input type="text" id="modalEndDate" class="form-control" placeholder="End Date" value ="` + endDate + `" disabled>
     </div>
   </div>
   <div class="clearfix"></div>
@@ -386,7 +394,7 @@ function displayDataInModal(noteId) {
     </div>
     <div class="col-xs-4 padding-left-none">
         <label for="modalEndTime" class="pull-left margin-t1">End Time:</label>
-        <input type="text" id="modalEndTime" class="form-control" placeholder="End Time" value ="` + notesMap[noteId].end_time + `" disabled>
+        <input type="text" id="modalEndTime" class="form-control" placeholder="End Time" value ="` + endTime + `" disabled>
     </div>
   </div>
   <div class="clearfix"></div>`;
