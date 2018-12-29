@@ -1,8 +1,7 @@
 ## Oingo
 ---
 
-Oingo is a new mobile app named that allows users to share useful information via their mobile devices based on social, geographic, temporal, and keyword constraints. The main idea
-in oingo is that users can publish information in the form of short notes, and then link these notes to certain locations and certain times. Other users can then receive these notes based on their own location, the current time, and based on what
+Oingo is a new mobile app named that allows users to share useful information via their mobile devices based on social, geographic, temporal, and keyword constraints. The main idea in oingo is that users can publish information in the form of short notes, and then link these notes to certain locations and certain times. Other users can then receive these notes based on their own location, the current time, and based on what
 type of messages they want to receive. 
 
 
@@ -55,12 +54,9 @@ Foursquare
 ### Part 1
 ---
 
-In this first part of the course project, we have designed the relational database that stores all the 
-information about users, friendships between users, notes published by users, and filters that users have for what kind of
-notes they want to receive at different times and in different situations.
+In this first part of the course project, we have designed the relational database that stores all the information about users, friendships between users, notes published by users, and filters that users have for what kind of notes they want to receive at different times and in different situations.
 
 ### Part 2
 ---
 
-In the second part of the project, we have designed a web-accessible interface for this system.
-We designed a browser interface that would also work on small screens, with not too much information on screen and with big buttons etc.
+In the second part of the project, we have designed a web-accessible interface for this system. We designed a browser interface that would also work on small screens, with not too much information on screen and with big buttons etc.
