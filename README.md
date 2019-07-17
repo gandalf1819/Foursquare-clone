@@ -1,5 +1,6 @@
 ## Oingo
----
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Oingo is a new mobile app named that allows users to share useful information via their mobile devices based on social, geographic, temporal, and keyword constraints. The main idea in oingo is that users can publish information in the form of short notes, and then link these notes to certain locations and certain times. Other users can then receive these notes based on their own location, the current time, and based on what
 type of messages they want to receive.  The startup believes that this may become a popular application as it can be useful in many scenarios. For example:
@@ -17,7 +18,6 @@ type of messages they want to receive.  The startup believes that this may becom
 
 
 ## Project Schema
----
 
 Foursquare 
 
@@ -63,11 +63,13 @@ Foursquare
         |-- posts.ejs 
         
 ### Part 1
----
 
 In this first part of the course project, we have designed the relational database that stores all the information about users, friendships between users, notes published by users, and filters that users have for what kind of notes they want to receive at different times and in different situations.
 
 ### Part 2
----
 
 In the second part of the project, we have designed a web-accessible interface for this system. We designed a browser interface that would also work on small screens, with not too much information on screen and with big buttons etc.
+
+# License
+
+This project is licensed under MIT license
