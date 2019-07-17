@@ -1,4 +1,4 @@
-## Oingo
+# Oingo
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
@@ -70,6 +70,10 @@ In this first part of the course project, we have designed the relational databa
 
 In the second part of the project, we have designed a web-accessible interface for this system. We designed a browser interface that would also work on small screens, with not too much information on screen and with big buttons etc.
 
-# License
+## Team
+* [Nikhil Nar](https://github.com/NikhilNar) (ncn251)
+* [Chinmay Wyawahare](https://github.com/gandalf1819) (cnw282)
+
+## License
 
 This project is licensed under MIT license
